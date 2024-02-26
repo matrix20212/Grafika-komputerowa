@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canva - Lab2Ex1</title>
+
+    <script>
+        function ksiezyc() {
+
+            graphics.beginPath();
+            graphics.arc(120, 100, 80, 0, 2 * Math.PI); 
+            graphics.fillStyle = '#f7e165';
+            graphics.fill();
+
+            graphics.beginPath();
+            graphics.arc(80, 80, 60, 0, 2 * Math.PI);
+            graphics.fillStyle = 'white';
+            graphics.fill();
+
+        }
+        function Oczy(){
+
+            graphics.beginPath();
+            graphics.arc(180, 100, 3, 0, 2 * Math.PI);
+            graphics.fillStyle = '#000';
+            graphics.fill();
+
+            graphics.beginPath();
+            graphics.arc(150, 100, 3, 0, 2 * Math.PI);
+            graphics.fillStyle = '#000';
+            graphics.fill();
+        }
+        function Buzia(){
+
+            graphics.beginPath();
+            graphics.moveTo(140, 130);
+            graphics.quadraticCurveTo(140, 150, 180, 130);
+            graphics.strokeStyle = '#000';
+            graphics.lineWidth = 2;
+            graphics.stroke();
+        }
+
+
+        function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+
+        ksiezyc();
+        Oczy();
+        Buzia();
+        }
+
+
+    </script>
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="640" height="480"></canvas>
+</body>
+</html>
