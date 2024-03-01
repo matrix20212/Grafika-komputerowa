@@ -9,15 +9,27 @@
         function ksiezyc() {
 
             graphics.beginPath();
+            graphics.arc(120, 100, 82, 0, 2 * Math.PI); 
+            graphics.fillStyle = 'black';
+            graphics.fill();
+
+            graphics.beginPath();
             graphics.arc(120, 100, 80, 0, 2 * Math.PI); 
             graphics.fillStyle = '#f7e165';
             graphics.fill();
 
             graphics.beginPath();
             graphics.arc(80, 80, 60, 0, 2 * Math.PI);
+            graphics.fillStyle = 'black';
+            graphics.fill();
+
+            graphics.beginPath();
+            graphics.arc(80, 80, 58, 0, 2 * Math.PI);
             graphics.fillStyle = 'white';
             graphics.fill();
 
+            graphics.fillStyle = 'white';
+            graphics.fillRect(0,0,95,127)
         }
         function Oczy(){
 
