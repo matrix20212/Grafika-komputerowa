@@ -5,31 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canva - Lab2Ex2</title>
 
-    <script>
-        function kwadraty(){
+    <style>
+        #theCanvas{
+            border: 1px black solid;
+            float: left;
+        }
+    </style>
 
-            for (let i = 0; i < 20; i++) {
-                for (let j = 0; j < 20; j++) {
-                    graphics.fillRect(i*15, j*15, 5, 5);
-                
+    <script>
+        let color = "black";
+        let shape = "kwadrat";
+
+        function changeColor() {
+            color = document.getElementById('colorSelect').value;
+        }
+
+        function changeShape() {
+            shape = document.getElementById('shapeSelect').value;
+        }
+
+        function drawSquare(x, y) {
+            graphics.fillStyle = color;
+            graphics.fillRect(x, y, 20, 20);
+        }
+        function drawCircle(x,y){
+            graphics.beginPath();
+            graphics.arc(x, y, 10, 0, 2 * Math.PI);
+            graphics.fillStyle = color;
+            graphics.fill();
+        }
+
+        function drawSquares() {
+            for (var i = 0; i < canvas.width; i += 60) {
+                for (var j = 0; j < canvas.height; j += 60) {
+                    drawSquare(i, j);
                 }
             }
         }
 
-        function Clear(){
-            graphics.clearRect(0, 0, 800, 800);
+        function Clear() {
+            graphics.clearRect(0, 0, 400, 400);
         }
 
         function init() {
         canvas = document.getElementById("theCanvas");
         graphics = canvas.getContext("2d");
 
-        kwadraty();
+        drawSquares();
+
+        canvas.addEventListener('mousemove', function(event) {
+            let mouseX = event.clientX - canvas.getBoundingClientRect().left;
+            let mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+            if (shape == "kwadrat") {
+                drawSquare(mouseX, mouseY);
+            }else if (shape == "kolo"){
+                drawCircle(mouseX,mouseY);
+            }
+        });
         }
+
+
+
     </script>
 </head>
 <body onload="init()">
-    <canvas id="theCanvas" width="800" height="800"></canvas>
     <button id="clearButton" onclick="Clear()">Wyczyść</button>
+    <select id="colorSelect" onchange="changeColor()">
+        <option value="black">Czrany</option>
+        <option value="red">Czerwony</option>
+        <option value="blue">Niebieski</option>
+        <option value="green">Zielony</option>
+    </select>
+
+    <select id="shapeSelect" onchange="changeShape()">
+        <option value="kwadrat">Kwadrat</option>
+        <option value="kolo">Koło</option>
+    </select>
+
+    <canvas id="theCanvas" width="400" height="400"></canvas>
 </body>
 </html>
