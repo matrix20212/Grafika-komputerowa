@@ -46,21 +46,28 @@
         function Buzia(){
 
             graphics.beginPath();
-            graphics.moveTo(140, 130);
-            graphics.quadraticCurveTo(140, 150, 180, 130);
-            graphics.strokeStyle = '#000';
-            graphics.lineWidth = 2;
-            graphics.stroke();
-        }
+            graphics.arc(165, 130, 20, 0, 2 * Math.PI); 
+            graphics.fillStyle = 'black';
+            graphics.fill();
 
+            graphics.fillStyle = "white";
+            graphics.fillRect(160, 135, 4, 10);
+            graphics.fillRect(166, 135, 4, 10);
+
+            graphics.beginPath();
+            graphics.arc(165, 110, 30, 0, 2 * Math.PI); 
+            graphics.fillStyle = '#f7e165';
+            graphics.fill();
+
+        }
 
         function init() {
         canvas = document.getElementById("theCanvas");
         graphics = canvas.getContext("2d");
 
         ksiezyc();
-        Oczy();
         Buzia();
+        Oczy();
         }
 
 
