@@ -20,6 +20,14 @@ def draw1(surface, x, y, radius):
         points.append(point)
     pygame.draw.polygon(surface, ZIELONY, points, 0)
 
+def shear_polygon(surface, points, shear_factor, offset_x, offset_y):
+    transformed_points = []
+    for x, y in points:
+        new_x = x + y * shear_factor
+        transformed_points.append((new_x + offset_x, y + offset_y))
+        
+    pygame.draw.polygon(surface, "GREEN", transformed_points, 0)
+
 def draw2(surface, x, y, radius):
     draw1(surface, x, y, radius)
     surface_new = pygame.transform.rotate(surface, 45)
@@ -41,7 +49,14 @@ def draw3(surface, x, y, radius):
     surface.blit(scalled, (offset_x,offset_y))
 
 def draw4(surface, x, y, radius):
-    draw1(surface, x, y, radius)
+    win.fill("black")
+    n = 12
+    points = []
+    for i in range(n):
+        angle = math.radians(360 / n * i)
+        point = (x + radius * math.cos(angle), y + radius * math.sin(angle))
+        points.append(point)
+    shear_polygon(surface,points,0.5,-150,0)
 
 def draw5(surface, x, y, radius):
     draw1(surface, x, y, radius)
@@ -54,7 +69,22 @@ def draw5(surface, x, y, radius):
     surface.blit(scalled, (offset_x,offset_y-220))
 
 def draw6(surface, x, y, radius):
-    draw1(surface, x, y, radius)
+    win.fill("black")
+    n = 12
+    points = []
+    for i in range(n):
+        angle = math.radians(360 / n * i)
+        point = (x + radius * math.cos(angle), y + radius * math.sin(angle))
+        points.append(point)
+    shear_polygon(surface,points,0.5,-150,0)
+    rotated = pygame.transform.rotate(surface,90)
+    surface.fill("black")
+
+    offset_x = (surface.get_width() - rotated.get_width()) // 2
+    offset_y = (surface.get_height() - rotated.get_height()) // 2
+
+    surface.blit(rotated, (offset_x,offset_y))
+
 
 def draw7(surface, x, y, radius):
     draw1(surface, x, y, radius)
@@ -79,7 +109,22 @@ def draw8(surface, x, y, radius):
     surface.blit(surface_new, (offset_x-50,offset_y+130))
 
 def draw9(surface, x, y, radius):
-    draw1(surface, x, y, radius)
+    win.fill("black")
+    n = 12
+    points = []
+    for i in range(n):
+        angle = math.radians(360 / n * i)
+        point = (x + radius * math.cos(angle), y + radius * math.sin(angle))
+        points.append(point)
+    shear_polygon(surface,points,0.5,-150,0)
+    rotated = pygame.transform.rotate(surface,180)
+    surface.fill("black")
+
+    offset_x = (surface.get_width() - rotated.get_width()) // 2
+    offset_y = (surface.get_height() - rotated.get_height()) // 2
+
+    surface.blit(rotated, (offset_x+130,offset_y))
+
 
 # Współrzędne środka i promień
 center_x, center_y = width // 2, height // 2
@@ -114,6 +159,6 @@ while running:
     if keys[pygame.K_9]:
         draw9(win, center_x, center_y, radius)
             
-
+# 4,6,9 TO DO
     pygame.display.update()
 pygame.quit()
