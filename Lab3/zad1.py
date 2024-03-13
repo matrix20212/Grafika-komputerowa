@@ -159,6 +159,6 @@ while running:
     if keys[pygame.K_9]:
         draw9(win, center_x, center_y, radius)
             
-# 4,6,9 TO DO
+
     pygame.display.update()
 pygame.quit()
