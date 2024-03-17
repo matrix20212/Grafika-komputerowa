@@ -21,23 +21,21 @@
     var frameNumber = 0; 
 
     function drawWorld() {
-        OilRig(0,0,"blue",0.7);
-        OilRig(-3,4,"purple",0.5);
-
-
- 
+        Figure(0.5,-0.66,"blue",0.8);
+        Figure(-2.4,2.3,"purple",0.65);
+        Figure(2.5,2.5,"green",0.45);
     }
 
     function updateFrame() {
         frameNumber++;
     }
 
-    function rotatingRect(x,y,scale) {
+    function rotatingPolygon(x,y,scale) {
         graphics.save(); 
         graphics.translate(x,y);
         graphics.rotate( (frameNumber*0.75) * Math.PI/180 );
-        graphics.scale( 2, 2 );
-        hexagon(scale);
+        graphics.scale(scale, scale);
+        polygon(2);
         graphics.restore();
     }
  
@@ -51,9 +49,8 @@
         graphics.stroke();
     }
  
-    function hexagon(scale)
+    function polygon(scale)
     {
-        // hexagon
         var numberOfSides = 12,
             size = scale,
             Xcenter = 0,
@@ -67,6 +64,7 @@
         }
  
         graphics.strokeStyle = "black";
+        graphics.lineWidth = 0.06
         graphics.stroke();
 
         for (var i = 1; i <= numberOfSides;i += 1) {
@@ -74,24 +72,25 @@
         }
     }
 
-    function OilRig(x, y, color, scale) {
+    function Figure(x, y, color, scale) {
         graphics.save();
+        graphics.translate(x, y);
         graphics.scale(scale, scale);
-        rotatingRect(2.3 + x, -0.7 + y, 0.4);
-        rotatingRect(-1.5 + x, 0 + y, 0.4);
-        rect([-1.5 + x, -0.4 + y]);
-        filledTriangle([0 + x, -2.99 + y], [1 + x, -2.99 + y], [0.5 + x, -0.4 + y], color); // Pass coordinates as arrays
+        rotatingPolygon(2.2, -1.1, 0.4);
+        rotatingPolygon(-1.4, 0.2, 0.4);
+        rect();
+        filledTriangle([0, -2.99], [1, -2.99], [0.5, -0.4], color);
         graphics.restore();
-}
+    }
  
-    function rect(c) {
-        graphics.rotate(-10 * Math.PI / 180);
+    function rect() {
+        graphics.rotate(-20 * Math.PI / 180);
         graphics.fillStyle = "red";
-        graphics.fillRect(c[0],c[1],4,0.25);
+        graphics.fillRect(-1.5, -0.4, 4, 0.25);
     }
   
-	function filledTriangle(c1,c2,c3,color) {// Filled Triangle, width 1, height 1, center of base at (0,0)
-		graphics.rotate(10 * Math.PI / 180);
+	function filledTriangle(c1,c2,c3,color) {
+		graphics.rotate(20 * Math.PI / 180);
         graphics.beginPath();
 		graphics.moveTo(c1[0],c1[1]);
 		graphics.lineTo(c2[0],c2[1]);
@@ -102,21 +101,20 @@
 	}
  
     function draw() {
-        graphics.save();  // to make sure changes don't carry over from one call to the next
-        graphics.fillStyle = BACKGROUND;  // background color
+        graphics.save();
+        graphics.fillStyle = BACKGROUND;
         graphics.fillRect(0,0,canvas.width,canvas.height);
         graphics.fillStyle = "black";
         applyLimits(graphics,X_LEFT,X_RIGHT,Y_TOP,Y_BOTTOM,false);
-        graphics.lineWidth = pixelSize;  // Use 1 pixel as the default line width
+        graphics.lineWidth = pixelSize;
         drawWorld();
         graphics.restore();
     }
 
     function applyLimits(g, xleft, xright, ytop, ybottom, preserveAspect) {
-       var width = canvas.width;   // The width of this drawing area, in pixels.
-       var height = canvas.height; // The height of this drawing area, in pixels.
+       var width = canvas.width;
+       var height = canvas.height;
        if (preserveAspect) {
-             // Adjust the limits to match the aspect ratio of the drawing area.
           var displayAspect = Math.abs(height / width);
           var requestedAspect = Math.abs(( ybottom-ytop ) / ( xright-xleft ));
           var excess;
@@ -138,11 +136,10 @@
        g.translate( -xleft, -ytop );
     }
 
-    var running = false;  // This is set to true when animation is running
+    var running = false;
  
     function frame() {
         if (running) {
-               // Draw one frame of the animation, and schedule the next frame.
             updateFrame();
             draw();
             requestAnimationFrame(frame);
@@ -156,6 +153,20 @@
             if (running)
                 requestAnimationFrame(frame);
         }
+    }
+ 
+    //----------------------- initialization -------------------------------
+ 
+    function init() {
+        canvas = document.getElementById("thecanvas");
+        if (!canvas.getContext) {
+            document.getElementById("message").innerHTML = "ERROR: Canvas not supported";
+            return;
+        }
+        graphics = canvas.getContext("2d");
+        document.getElementById("animateCheck").checked = false; 
+        document.getElementById("animateCheck").onchange = doAnimationCheckbox; 
+        draw();
     }
  
     //----------------------- initialization -------------------------------
