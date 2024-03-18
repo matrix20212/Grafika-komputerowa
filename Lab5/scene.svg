@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+width="600px" height="600px"
+viewBox="0 0 200 200"
+preserveAspectRatio="xMidYMid">
+
+<defs>
+    <g id = "polygon" stroke = "black">
+        <polygon points="100,10 158,27 187,71 187,129 158,173 100,190 42,173 13,129 13,71 42,27 100,10" fill="none" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="100" y2="10" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="158" y2="27" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="187" y2="71" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="187" y2="129" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="158" y2="173" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="100" y2="190" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="42" y2="173" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="13" y2="129" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="13" y2="71" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="42" y2="27" stroke="black" stroke-width="2"/>
+        <line x1="100" y1="100" x2="100" y2="10" stroke="black" stroke-width="2"/>
+        <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="7s" repeatCount="indefinite"/>
+    </g>
+
+    <g id = "Figure-blue">
+        <use xlink:href = "#polygon" transform = "scale(0.25) translate(50,260)"/>
+        <use xlink:href = "#polygon" transform = "scale(0.25) translate(440,400)"/>
+        <rect width = "110" height = "8" fill = "red" transform = "rotate(20) translate(62,67)" />
+        <polygon points="100,200 140,200 120,100" fill="blue" transform = "scale(0.7) translate(0,50)"/>
+    </g>
+    <g id = "Figure-green">
+        <use xlink:href = "#polygon" transform = "scale(0.25) translate(50,260)"/>
+        <use xlink:href = "#polygon" transform = "scale(0.25) translate(440,400)"/>
+        <rect width = "110" height = "8" fill = "red" transform = "rotate(20) translate(62,67)" />
+        <polygon points="100,200 140,200 120,100" fill="green" transform = "scale(0.7) translate(0,50)"/>
+    </g>
+    <g id = "Figure-purple">
+        <use xlink:href = "#polygon" transform = "scale(0.25) translate(50,260)"/>
+        <use xlink:href = "#polygon" transform = "scale(0.25) translate(440,400)"/>
+        <rect width = "110" height = "8" fill = "red" transform = "rotate(20) translate(62,67)" />
+        <polygon points="100,200 140,200 120,100" fill="purple" transform = "scale(0.7) translate(0,50)"/>
+    </g>
+</defs>
+
+<use xlink:href = "#Figure-blue" transform = "scale(0.9) translate(64,45)"/>
+<use xlink:href = "#Figure-purple" transform = "scale(0.6) translate(0,0)"/>
+<use xlink:href = "#Figure-green" transform = "scale(0.45) translate(280,20)"/>
+
+</svg>
