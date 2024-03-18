@@ -28,10 +28,9 @@
      *  color before this function is called.
      */
     function drawWorld() {
-
-        // TODO: Draw the content of the scene.
-        rotatingRect();  // (DELETE THIS EXAMPLE)
-
+        Figure(0.5,-0.66,"blue",0.8);
+        Figure(-2.4,2.3,"purple",0.65);
+        Figure(2.5,2.5,"green",0.45);
     }
     
     /**
@@ -46,52 +45,74 @@
  
      // TODO: Define methods for drawing the objects in the scene.
     
-    function rotatingRect() { // (DELETE THIS EXAMPLE)
-        graphics.save();  // (It might be necessary to save/restore transform and color)
-        graphics.fillStyle = "red";
+
+    function rotatingPolygon(x,y,scale) {
+        graphics.save(); 
+        graphics.translate(x,y);
         graphics.rotate( (frameNumber*0.75) * Math.PI/180 );
-        graphics.scale( 2, 2 );
-        filledRect();
+        graphics.scale(scale, scale);
+        polygon(2);
         graphics.restore();
     }
 
-
     //------------------- Some methods for drawing basic shapes. ----------------
     
-    function line() { // Draws a line from (-0.5,0) to (0.5,0)
+    function line(x1,y1,x2,y2) {
         graphics.beginPath();
-        graphics.moveTo(-0.5,0);
-        graphics.lineTo(0.5,0);
+        graphics.moveTo(x1,y1);
+        graphics.lineTo(x2,y2);
         graphics.stroke();
     }
-
-    function rect() { // Strokes a square, size = 1, center = (0,0)
-        graphics.strokeRect(-0.5,-0.5,1,1);
-    }
-
-    function filledRect() { // Fills a square, size = 1, center = (0,0)
-        graphics.fillRect(-0.5,-0.5,1,1);
-    }
-
-    function circle() { // Strokes a circle, diameter = 1, center = (0,0)
+ 
+    function polygon(scale)
+    {
+        var numberOfSides = 12,
+            size = scale,
+            Xcenter = 0,
+            Ycenter = 0;
+ 
         graphics.beginPath();
-        graphics.arc(0,0,0.5,0,2*Math.PI);
+        graphics.moveTo (Xcenter +  size*Math.cos(0), Ycenter +  size*Math.sin(0));          
+ 
+        for (var i = 1; i <= numberOfSides;i += 1) {
+            graphics.lineTo (Xcenter + size*Math.cos(i * 2 * Math.PI / numberOfSides), Ycenter +  size*Math.sin(i * 2 * Math.PI / numberOfSides));
+        }
+ 
+        graphics.strokeStyle = "black";
+        graphics.lineWidth = 0.06
         graphics.stroke();
+
+        for (var i = 1; i <= numberOfSides;i += 1) {
+            line(Xcenter,Ycenter,Xcenter + size*Math.cos(i * 2 * Math.PI / numberOfSides), Ycenter +  size*Math.sin(i * 2 * Math.PI / numberOfSides));
+        }
     }
 
-    function filledCircle() { // Fills a circle, diameter = 1, center = (0,0)
+    function Figure(x, y, color, scale) {
+        graphics.save();
+        graphics.translate(x, y);
+        graphics.scale(scale, scale);
+        rotatingPolygon(2.2, -1.1, 0.4);
+        rotatingPolygon(-1.4, 0.2, 0.4);
+        rect();
+        filledTriangle([0, -2.99], [1, -2.99], [0.5, -0.4], color);
+        graphics.restore();
+    }
+ 
+    function rect() {
+        graphics.rotate(-20 * Math.PI / 180);
+        graphics.fillStyle = "red";
+        graphics.fillRect(-1.5, -0.4, 4, 0.25);
+    }
+  
+	function filledTriangle(c1,c2,c3,color) {
+		graphics.rotate(20 * Math.PI / 180);
         graphics.beginPath();
-        graphics.arc(0,0,0.5,0,2*Math.PI);
-        graphics.fill();
-    }
-
-	function filledTriangle(g2) {// Filled Triangle, width 1, height 1, center of base at (0,0)
-		g2.beginPath();
-		g2.moveTo(-0.5,0);
-		g2.lineTo(0.5,0);
-		g2.lineTo(0,1);
-		g2.closePath();
-		g2.fill();
+		graphics.moveTo(c1[0],c1[1]);
+		graphics.lineTo(c2[0],c2[1]);
+		graphics.lineTo(c3[0],c3[1]);
+		graphics.closePath();
+        graphics.fillStyle = color;
+		graphics.fill();
 	}
 
  
