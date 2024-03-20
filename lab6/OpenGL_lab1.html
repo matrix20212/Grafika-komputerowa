@@ -35,19 +35,16 @@
         return Math.random();
     }
     function spirale(n){
-        glColor3f(1.0, 1.0, 1.0); // Ustawienie koloru na biały
-        glBegin(GL_POINTS);
+        glColor3f(1, 0, 0);
+        glBegin(GL_LINE_STRIP);
+        const angle = Math.PI / n;
+        for (let i = 0; i < n * n; i++) {
+            const x = Math.cos(angle * i) * (0.03 * i);
+            const y = i / (2 * n);
+            const z = Math.sin(angle * i) * (0.03 * i);
 
-        // Rysowanie spiralnej linii
-        for (let i = 0; i <= N * 10; i++) {
-            const t = i / 10;
-            const radius = t * 0.1;
-            const z = t;
-            const x = radius * Math.cos(t);
-            const y = radius * Math.sin(t);
-            glVertex3f(x, y, z);
+            glVertex3d(x, y, z);
         }
-
         glEnd();
     }
     function pyramid(N){
@@ -88,12 +85,11 @@
         glRotatef(rotateY,0,1,0);
         glRotatef(rotateX,1,0,0);
         
-        // if (object = 1) {
-        //     spirale(20);
-        // }else{
-        //     pyramid(4);
-        // }
-        spirale(12);
+        if (object === 1) {
+            spirale(20);
+        }else{
+            pyramid(12);
+        }
         
     }
     
