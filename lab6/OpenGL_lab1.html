@@ -1,43 +1,27 @@
 
 <!DOCTYPE html>
 <html>
-
-<!--
- Use OpenGL and GLUT to draw a simple cube
-  with each face being a different color.  Rotations
-  can be applied with the arrow keys, the page up
-  key, and the page down key.  The home key will set
-  all rotations to 0.  Initial rotations about the
-  x, y, and z axes are 15, -15, and 0.  
-
-  This program is meant as an example of using modeling
-  transforms, with glPushMatrix and glPopMatrix.
- 
-  Note that this program does not use lighting.
--->
-
 <head>
 <meta charset="UTF-8">
 <title>Unlit Cube Example</title>
 
-<script src="glsim.js"></script>  <!-- load the OpenGL 1.1 simulation code -->
+<script src="glsim.js"></script> 
 
 <script>
 
     let rotateX = 15;   // rotations of cube about the axes
     let rotateY = -15;
     let rotateZ = 0;
-    let object = 2;
-    
-    // ------------------- functions for drawing the cube -------------------
-    
+    let object = 1;
+        
     function getColor() {
         return Math.random();
     }
+
     function spirale(n){
         glColor3f(1, 0, 0);
         glBegin(GL_LINE_STRIP);
-        const angle = Math.PI / n;
+        const angle = Math.PI / (n * 0.5);
         for (let i = 0; i < n * n; i++) {
             const x = Math.cos(angle * i) * (0.03 * i);
             const y = i / (2 * n);
@@ -47,6 +31,7 @@
         }
         glEnd();
     }
+    
     function pyramid(N){
         glBegin(GL_TRIANGLES);
         // Rysowanie bocznych ścian piramidy
@@ -76,11 +61,11 @@
     
     // ----------------------------------------------------------------------
 
-    function display() {  // Draws the image.
+    function display() {
 
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                 
-        glLoadIdentity();             // Set up modelview transform. 
+        glLoadIdentity(); 
         glRotatef(rotateZ,0,0,1);
         glRotatef(rotateY,0,1,0);
         glRotatef(rotateX,1,0,0);
