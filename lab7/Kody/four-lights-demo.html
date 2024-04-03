@@ -20,8 +20,8 @@
 <script src="../script/demo-core.js"></script>
 <script src="../script/glsim.js"></script>
 <script src="../script/teapot-model-IFS.js"></script>
+<script src="../script/piramida-model.js"></script>
 <script>
-
 var camera;
 
 var animate;       // checkbox that controls animation
@@ -162,14 +162,11 @@ function colorArrayForHue(h, s, v) {
  */
 function drawCylinder() {
     var i;
-    var rgba;
     glBegin(GL_TRIANGLE_STRIP);
     for (i = 0; i <= 64; i++) {
         var angle = 2*Math.PI/64 * i;
         var x = Math.cos(angle);
         var y = Math.sin(angle);
-        rgba = colorArrayForHue(i/64.0, 1, 0.6);
-        glColor3dv(rgba);
         glNormal3d( x, y, 0 );  // Normal for both vertices at this angle.
         glVertex3d( x, y, 1 );  // Vertex on the top edge.
         glVertex3d( x, y, -1 ); // Vertex on the bottom edge.
@@ -183,8 +180,6 @@ function drawCylinder() {
         var angle = 2*Math.PI/64 * i;
         var x = Math.cos(angle);
         var y = Math.sin(angle);
-        rgba = colorArrayForHue(i/64.0, 1, 0.6);
-        glColor3dv(rgba);
         glVertex3d( x, y, 1 );
     }
     glEnd();
@@ -196,8 +191,6 @@ function drawCylinder() {
         var angle = 2*Math.PI/64 * i;
         var x = Math.cos(angle);
         var y = Math.sin(angle);
-        rgba = colorArrayForHue(i/64.0, 1, 0.6);
-        glColor3dv(rgba);
         glVertex3d( x, y, -1 );
     }
     glEnd();    
@@ -207,8 +200,8 @@ function drawCylinder() {
  */
 function display() {
 
-    glClearColor(0,0,0,1);
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); 
+    // glClearColor(0,0,0,1);
+    // glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); 
 
     camera.apply();
 
@@ -232,14 +225,13 @@ function display() {
         glPopMatrix();
     }
 
-    glColor3d(0.7,0.7,0.7);  // sets diffuse and ambient color for teapot
+    //glColor3d(0.7,0.7,0.7);  // sets diffuse and ambient color for teapot
 
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, [0.2, 0.2, 0.2, 1]);
+    //glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, [0.2, 0.2, 0.2, 1]);
 
     glPushMatrix();
-    glTranslatef(0,0.68,0);
-    glScalef(0.65,0.65,0.65);
-    glsimDrawModel(teapotModel);
+    glScalef(7,8,7);
+    glsimDrawModel(piramida);
     glPopMatrix();
 }
 
