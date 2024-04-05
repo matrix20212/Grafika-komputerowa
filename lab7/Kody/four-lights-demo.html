@@ -20,7 +20,6 @@
 <script src="../script/demo-core.js"></script>
 <script src="../script/glsim.js"></script>
 <script src="../script/teapot-model-IFS.js"></script>
-<script src="../script/piramida-model.js"></script>
 <script>
 var camera;
 
@@ -80,7 +79,7 @@ function lights() {
         glDisable(GL_LIGHT0);
     
     if (redLight.checked) {
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, [0.5, 0, 0, 1]);  
+        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, [0.4, 0, 0, 1]);  
         glEnable(GL_LIGHT1);
     }
     else {
@@ -94,72 +93,10 @@ function lights() {
     uvSphere(0.5, 16, 8);
     glPopMatrix();
     
-    if (greenLight.checked) {
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, [0, 0.5, 0, 1]); 
-        glEnable(GL_LIGHT2);
-    }
-    else {
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zero); 
-        glDisable(GL_LIGHT2);
-    }
-    glPushMatrix();
-    glRotated((frameNumber+100)*0.8743, 0, 1, 0);
-    glTranslated(9, 8, 0);
-    glLightfv(GL_LIGHT2, GL_POSITION, zero);
-    uvSphere(0.5, 16, 8);
-    glPopMatrix();
-    
-    if (blueLight.checked) {
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, [0, 0, 0.5, 1]); 
-        glEnable(GL_LIGHT3);
-    }
-    else {
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zero);
-        glDisable(GL_LIGHT3);
-    }
-    glPushMatrix();
-    glRotated((frameNumber-100)*1.3057, 0, 1, 0);
-    glTranslated(9.5, 7.5, 0);
-    glLightfv(GL_LIGHT3, GL_POSITION, zero);
-    uvSphere(0.5, 16, 8);
-    glPopMatrix();
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zero); // Turn off emission color!
-} // end lights()
-
-
-/*  Fills the array with RGBA color components corresponding the given HSV color 
- *  components, where h, s, and v are in the range 0.0 to 1.0.
- */
-function colorArrayForHue(h, s, v) {
-    var r,g,b;
-    var c,x;
-    h = h*359;
-    c = v*s;
-    x = (h < 120)? h/60 : (h < 240)? (h-120)/60 : (h-240)/60;
-    x = c * (1-Math.abs(x-1));
-    x += (v-c);
-    switch (Math.floor(h/60)) {
-        case 0: r = v; g = x; b = v-c; break;
-        case 1: r = x; g = v; b = v-c; break;
-        case 2: r = v-c; g = v; b = x; break;
-        case 3: r = v-c; g = x; b = v; break;
-        case 4: r = x; g = v-c; b = v; break;
-        case 5: r = v; g = v-c; b = x; break;
-    }
-    var array = new Array(4);
-    array[0] = r;
-    array[1] = g;
-    array[2] = b;
-    array[3] = 1;
-    return array;
 }
 
-/*  Draws a cylinder with height 2 and radius 1, centered at the origin, with its axis
- *  along the z-axis.  A spectrum of hues is applied to the vertices along the edges
- *  of the cylinder.  (Since GL_COLOR_MATERIAL is enabled in this program, the colors
- *  specified here are used as ambient and diffuse material colors for the cylinder.)
- */
 function drawCylinder() {
     var i;
     glBegin(GL_TRIANGLE_STRIP);
@@ -196,12 +133,64 @@ function drawCylinder() {
     glEnd();    
 }
 
+function Piramida(){
+    var sides = 12; // Number of sides of the base polygon
+    var height = 1.5; // Height of the pyramid
+
+    var materialProperties = [
+        0.6, 0.6, 0.6, // Ambient
+        0.6, 0.6, 0.6, // Diffuse
+        1.0, 1.0, 1.0, 1.0, // Specular
+        16 // Shininess
+    ];
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, materialProperties.slice(0, 3));
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materialProperties.slice(3, 6));
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materialProperties.slice(6, 10));
+    //glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, materialProperties.slice(10, 11));
+
+    // Draw the base of the pyramid (regular dodecagon)
+    glBegin(GL_POLYGON);
+    glNormal3d(0, 0, -1); // Normal for the base
+    glColor3d(1, 1, 1); // ambient and diffuse for center
+    for (var i = 0; i < sides; i++) {
+        var angle = (2 * Math.PI / sides) * i;
+        var x = Math.cos(angle);
+        var y = Math.sin(angle);
+        glVertex3d(x, y, 0); // Vertices of the base polygon
+    }
+    glEnd();
+
+    // Draw the sides of the pyramid
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3d(0, 0, height); // Apex of the pyramid
+    for (var i = 0; i <= sides; i++) {
+        var angle = (2 * Math.PI / sides) * i;
+        var x = Math.cos(angle);
+        var y = Math.sin(angle);
+        glVertex3d(x, y, 0); // Vertices of the base polygon
+    }
+    glEnd();
+
+    // Connect the apex to the vertices of the base to form the sides
+    glBegin(GL_TRIANGLE_STRIP);
+    for (var i = 0; i < sides; i++) {
+        var angle = (2 * Math.PI / sides) * i;
+        var x = Math.cos(angle);
+        var y = Math.sin(angle);
+        glVertex3d(0, 0, height); // Apex of the pyramid
+        glVertex3d(x, y, 0); // Vertices of the base polygon
+    }
+    glEnd();
+
+}
+
 /* Draws the scene.
  */
 function display() {
 
-    // glClearColor(0,0,0,1);
-    // glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); 
+    glClearColor(0,0,0,1);
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); 
 
     camera.apply();
 
@@ -218,20 +207,19 @@ function display() {
         glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, [0, 0, 0, 1] );
 
         glPushMatrix();
-        glTranslated(0, -5, 0);
+        glTranslated(0, -0.4, 0);
         glRotated(-90, 1, 0, 0);
         glScaled(10,10,0.5);
         drawCylinder();
         glPopMatrix();
     }
 
-    //glColor3d(0.7,0.7,0.7);  // sets diffuse and ambient color for teapot
-
-    //glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, [0.2, 0.2, 0.2, 1]);
+    glColor3d(0.7,0.7,0.7);  // sets diffuse and ambient color for teapot
 
     glPushMatrix();
-    glScalef(7,8,7);
-    glsimDrawModel(piramida);
+    glScalef(7,7,7);
+    glRotated(-90, 1, 0, 0);
+    Piramida();
     glPopMatrix();
 }
 
