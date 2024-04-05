@@ -1,25 +1,11 @@
 <!DOCTYPE html>
 <html>
-<!--
- *  Shows a scene (a teapot on a short cylindrical base) that is illuminated
- *  by up to four lights plus global ambient light.  The user can turn the
- *  lights on and off.  The global ambient light is a dim white.  There is 
- *  a white "viewpoint" light that points from the direction of the viewer
- *  into the scene.  There is a red light, a blue light, and a green light
- *  that rotate in circles above the teapot.  (The user can turn the animation
- *  on and off.)  The locations of the colored lights are marked by spheres,
- *  which are gray when the light is off and are colored by some emission color
- *  when the light is on.  The teapot is gray with weak specular highlights.
- *  The base is colored with a spectrum.  (The user can turn the display of
- *  the base on and off.)  The mouse can be used to rotate the scene.
--->
 <head>
 <meta charset="UTF-8">
 <title>Four Lights</title>
 <link rel="stylesheet" href="../demo.css">
 <script src="../script/demo-core.js"></script>
 <script src="../script/glsim.js"></script>
-<script src="../script/teapot-model-IFS.js"></script>
 <script>
 var camera;
 
@@ -33,7 +19,6 @@ var frameNumber = 0;  // frame number for use in animation
 
 //------------------- Drawing functions ----------------------------------------
 
-/* Draws a sphere. */
 function uvSphere(radius, slices, stacks) {
     var i,j;
     for (j = 0; j < stacks; j++) {
@@ -61,15 +46,11 @@ function uvSphere(radius, slices, stacks) {
         }
         glEnd();
     }
-} // end uvSphere
+}
 
-/*  Sets the positions of the colored lights and turns them on and off, depending on
- *  the state of the redLight, greenLight, and blueLight options.  Draws a small
- *  sphere at the location of each light.
- */
 function lights() {
 
-    glColor3d(0.5,0.5,0.5);
+    glColor3d(1,1,1);
     var zero = [ 0, 0, 0, 1 ];
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, zero);
     
@@ -79,7 +60,7 @@ function lights() {
         glDisable(GL_LIGHT0);
     
     if (redLight.checked) {
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, [0.4, 0, 0, 1]);  
+        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, [1, 1, 1, 1]);  
         glEnable(GL_LIGHT1);
     }
     else {
@@ -104,14 +85,14 @@ function drawCylinder() {
         var angle = 2*Math.PI/64 * i;
         var x = Math.cos(angle);
         var y = Math.sin(angle);
-        glNormal3d( x, y, 0 );  // Normal for both vertices at this angle.
-        glVertex3d( x, y, 1 );  // Vertex on the top edge.
-        glVertex3d( x, y, -1 ); // Vertex on the bottom edge.
+        glNormal3d( x, y, 0 );
+        glVertex3d( x, y, 1 );
+        glVertex3d( x, y, -1 );
     }
     glEnd();
     glNormal3d( 0, 0, 1 );
-    glBegin(GL_TRIANGLE_FAN);  // Draw the top, in the plane z = 1.
-    glColor3d(1,1,1);  // ambient and diffuse for center
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3d(1,1,1);
     glVertex3d( 0, 0, 1);
     for (i = 0; i <= 64; i++) {
         var angle = 2*Math.PI/64 * i;
@@ -121,8 +102,8 @@ function drawCylinder() {
     }
     glEnd();
     glNormal3f( 0, 0, -1 );  
-    glBegin(GL_TRIANGLE_FAN);  // Draw the bottom, in the plane z = -1
-    glColor3d(1,1,1);  // ambient and diffuse for center
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3d(1,1,1);
     glVertex3d( 0, 0, -1);
     for (i = 64; i >= 0; i--) {
         var angle = 2*Math.PI/64 * i;
@@ -134,59 +115,46 @@ function drawCylinder() {
 }
 
 function Piramida(){
-    var sides = 12; // Number of sides of the base polygon
-    var height = 1.5; // Height of the pyramid
+    var sides = 12;
+    var height = 1.5;
+    //Zastosowanie materiału
+    var materialProperties = [0.6, 0.6, 0.6, 1.0, 0.6, 0.6, 0.6, 1.0, 1, 1, 1, 1, 16];
 
-    var materialProperties = [
-        0.6, 0.6, 0.6, // Ambient
-        0.6, 0.6, 0.6, // Diffuse
-        1.0, 1.0, 1.0, 1.0, // Specular
-        16 // Shininess
-    ];
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, materialProperties.slice(0, 4));
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materialProperties.slice(4, 8));
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materialProperties.slice(8, 12));
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, materialProperties.slice(12));
 
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, materialProperties.slice(0, 3));
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materialProperties.slice(3, 6));
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materialProperties.slice(6, 10));
-    //glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, materialProperties.slice(10, 11));
-
-    // Draw the base of the pyramid (regular dodecagon)
+    //Podstawa piramidy
     glBegin(GL_POLYGON);
-    glNormal3d(0, 0, -1); // Normal for the base
-    glColor3d(1, 1, 1); // ambient and diffuse for center
+    glNormal3d(0, 0, -1);
     for (var i = 0; i < sides; i++) {
         var angle = (2 * Math.PI / sides) * i;
         var x = Math.cos(angle);
         var y = Math.sin(angle);
-        glVertex3d(x, y, 0); // Vertices of the base polygon
+        glVertex3d(x, y, 0);
     }
     glEnd();
 
-    // Draw the sides of the pyramid
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex3d(0, 0, height); // Apex of the pyramid
-    for (var i = 0; i <= sides; i++) {
-        var angle = (2 * Math.PI / sides) * i;
-        var x = Math.cos(angle);
-        var y = Math.sin(angle);
-        glVertex3d(x, y, 0); // Vertices of the base polygon
-    }
-    glEnd();
-
-    // Connect the apex to the vertices of the base to form the sides
-    glBegin(GL_TRIANGLE_STRIP);
+    // Boki piramidy
+    glBegin(GL_TRIANGLES);
     for (var i = 0; i < sides; i++) {
-        var angle = (2 * Math.PI / sides) * i;
-        var x = Math.cos(angle);
-        var y = Math.sin(angle);
-        glVertex3d(0, 0, height); // Apex of the pyramid
-        glVertex3d(x, y, 0); // Vertices of the base polygon
+        var angle1 = (2 * Math.PI / sides) * i;
+        var angle2 = (2 * Math.PI / sides) * (i + 1);
+        var x1 = Math.cos(angle1);
+        var y1 = Math.sin(angle1);
+        var x2 = Math.cos(angle2);
+        var y2 = Math.sin(angle2);
+        var nx = (x1 + x2) / 2;
+        var ny = (y1 + y2) / 2;
+        glNormal3d(nx, ny, height / 2);
+        glVertex3d(0, 0, height);
+        glVertex3d(x1, y1, 0);
+        glVertex3d(x2, y2, 0);
     }
     glEnd();
-
 }
 
-/* Draws the scene.
- */
 function display() {
 
     glClearColor(0,0,0,1);
@@ -223,8 +191,6 @@ function display() {
     glPopMatrix();
 }
 
-/* Initialization, including setting up a camera and configuring the four lights.
- */
 function initGL() {
     glClearColor(0, 0, 0, 1);  
     glEnable(GL_DEPTH_TEST); 
@@ -239,26 +205,13 @@ function initGL() {
     glLightfv(GL_LIGHT0, GL_DIFFUSE, dim);
     glLightfv(GL_LIGHT0, GL_SPECULAR, dim);
 
-    var red =  [ 0.5, 0, 0, 1];
-    var reda = [ 0.1, 0, 0, 1];
+    var red =  [ 1, 1, 1, 1];
+    var reda = [ 0.01, 0, 0, 1];
     glLightfv(GL_LIGHT1, GL_AMBIENT, reda);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, red);
     glLightfv(GL_LIGHT1, GL_SPECULAR, red);
-
-    var gr = [ 0, 0.5, 0, 1 ];
-    var gra = [ 0, 0.1, 0, 1 ];
-    glLightfv(GL_LIGHT2, GL_AMBIENT, gra);
-    glLightfv(GL_LIGHT2, GL_DIFFUSE, gr);
-    glLightfv(GL_LIGHT2, GL_SPECULAR, gr);
-
-    var bl = [0, 0, 0.5, 1];
-    var bla = [0, 0, 0.1, 1];
-    glLightfv(GL_LIGHT3, GL_AMBIENT, bla);
-    glLightfv(GL_LIGHT3, GL_DIFFUSE, bl);
-    glLightfv(GL_LIGHT3, GL_SPECULAR, bl);
 }
 
-/* Animation function, called every 30 milliseconds if an animation is runnin */
 function doFrame() {
     if (animating) {
 	frameNumber++;
@@ -286,7 +239,7 @@ function init() {
     animate.checked = false;
     drawBase.checked = true;
     ambientLight.checked = true;
-    viewpointLight.checked = true;
+    viewpointLight.checked = false;
     redLight.checked = true;
     greenLight.checked = true;
     blueLight.checked = true;
@@ -374,9 +327,6 @@ the material colors can be set by calling <i>glColor3fv</i> instead of
 <i>glMaterialfv</i>.</p>
 </div>
 
-
-
-<!-- support for help text -- do not change. -->
 <div id="help-icon">
 <img src="../image/question32.png" onclick="showDemoHelp()"
     title="Click here for information about this demo." width="32" height="32">
