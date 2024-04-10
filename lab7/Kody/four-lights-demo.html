@@ -12,7 +12,7 @@ var camera;
 var animate;       // checkbox that controls animation
 var drawBase;      // checkbox for turning display of base on and off
 var ambientLight;  // checkbox for turning global ambient light on and off
-var viewpointLight, redLight, blueLight, greenLight;  // checkboxes for turning lights on and off
+var viewpointLight, whitelight;  // checkboxes for turning lights on and off
 
 var animating = false;  // tells whether the animation is running
 var frameNumber = 0;  // frame number for use in animation
@@ -59,7 +59,7 @@ function lights() {
     else
         glDisable(GL_LIGHT0);
     
-    if (redLight.checked) {
+    if (whitelight.checked) {
         glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, [1, 1, 1, 1]);  
         glEnable(GL_LIGHT1);
     }
@@ -233,22 +233,16 @@ function init() {
     drawBase = document.getElementById("drawBase");
     ambientLight = document.getElementById("ambientLight");
     viewpointLight = document.getElementById("viewpointLight");
-    redLight = document.getElementById("redLight");
-    blueLight = document.getElementById("blueLight");
-    greenLight = document.getElementById("greenLight");
+    whitelight = document.getElementById("whitelight");
     animate.checked = false;
     drawBase.checked = true;
     ambientLight.checked = true;
     viewpointLight.checked = false;
-    redLight.checked = true;
-    greenLight.checked = true;
-    blueLight.checked = true;
+    whitelight.checked = true;
     drawBase.onchange = display;
     ambientLight.onchange = display;
     viewpointLight.onchange = display;
-    redLight.onchange = display;
-    blueLight.onchange = display;
-    greenLight.onchange = display;
+    whitelight.onchange = display;
     animate.onchange = function() {
 	if (animate.checked) {
 	    animating = true;
@@ -284,9 +278,7 @@ function init() {
 <label><input type="checkbox" id="drawBase">DrawBase</label><br><br>
 <label><input type="checkbox" id="ambientLight">Global Ambient</label><br><br>
 <label><input type="checkbox" id="viewpointLight">Viewpoint Light</label><br>
-<label><input type="checkbox" id="redLight">Red Light</label><br>
-<label><input type="checkbox" id="greenLight">Green Light</label><br>
-<label><input type="checkbox" id="blueLight">Blue Light</label><br>
+<label><input type="checkbox" id="whitelight">White Light</label><br>
 
 
 </p>
