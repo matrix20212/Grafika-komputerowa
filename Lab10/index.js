@@ -12,7 +12,7 @@ scene.add(camera);
 
 const material = new THREE.MeshPhongMaterial(
     {
-        color: 0xFAFAFA
+        color: 0xFFFFFF
     }
 );
 const points = [
@@ -39,6 +39,6 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-camera.position.z = 7;
+camera.position.z = 5;
 
 animate();
