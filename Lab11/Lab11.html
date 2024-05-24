@@ -13,15 +13,6 @@
     }
 </style>
  
-<!--
-   A 2D WebGL app in which "points" move around in the browser window, bouncing
-   off the edges.  The animation can be paused and restarted by pressing the
-   space key.
-       If the user clicks or clicks-and-drags with the mouse, all of the
-   points head towards the mouse position, except if the user shift-clicks, the
-   positions and velocities of the points are re-initialized.
--->
- 
 <script type="x-shader/x-vertex" id="vshader-source">
     attribute vec2 a_coords; // vertex position in standard canvas pixel coords
 
@@ -150,11 +141,7 @@ function MODIFYSHAPE(v3rtex){
 function render() {
  
     gl.clear(gl.COLOR_BUFFER_BIT);  // clear the color buffer before drawing
- 
-    // The position data changes for each frame, so we have to send the new values
-    // for the position attirbute into the corresponding buffer in the GPU here,
-    // in every frame.
- 
+  
     gl.bindBuffer(gl.ARRAY_BUFFER, a_coords_buffer);            // Select the buffer we want to use.
     gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STREAM_DRAW);  // Send the data.
     gl.vertexAttribPointer(a_coords_loc, 2, gl.FLOAT, false, 0, 0);  // Describes the data format.
@@ -183,12 +170,6 @@ function render() {
     }
 } // end render()
  
- 
-/**
- * Called once in init() to create the data for the scene. Creates point positions and
- * velocities.  All points start at the center of the canvas, with random velocity.
- * The speed is between 2 and 6 pixels per frame.
- */
 function createData() {
 
     RANDOMIZECOLOR();
@@ -203,12 +184,6 @@ function createData() {
    }
 } // end createData()
  
- 
-/**
-* Called by frame() before each frame is rendered.  Adds velcities
-* to point positions.  If the point moves past the edge of the canvas,
-* it bounces.
-*/
 function updateData() {
    for (var i = 0; i < POINT_COUNT; i++) {
       positions[2*i] += velocities[2*i];
@@ -314,28 +289,9 @@ function initGL() {
         console.log("During initialization, a GL error has been detected.");
     }
 } // end initGL()
- 
- 
-/**
- * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
- * the program identifier is the return value of the function.
- *    The second and third parameters are the id attributes for <script>
- * elements that contain the source code for the vertex and fragment
- * shaders.
- *     If the third parameter is present, it should be the name of an
- * attribute variable in the shader program, and the attribute should be
- * one that is always used.  The attribute will be assigned attribute
- * number 0.  This is done because it is suggested that there should
- * always be an attribute number 0 in use.
- */
+
 function createProgram(gl, vertexShaderID, fragmentShaderID, attribute0) {
     function getTextContent( elementID ) {
-            // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
-            // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;
         var str = "";
@@ -379,14 +335,7 @@ function createProgram(gl, vertexShaderID, fragmentShaderID, attribute0) {
     }
     return prog;
 }
- 
-/**
- *  A function to drive the animation, which runs continuously while the global
- *  variable isRunning is true.  The value of this variable is toggled by pressing
- *  the space bar.  If the animation is still running, this fucntion calls
- *  updateData(), then calls render(), then calls requestAnimationFrame to
- *  schedule the next call to the same function.
- */
+
 function frame() {
     if (isRunning) {
        updateData();
@@ -395,11 +344,6 @@ function frame() {
     }
 }
  
-/**
- * When the window is resized, we need to resize the canvas, reset the
- * OpenGL viewport to match the size, and reset the values of the uniform
- * variables in the shader that represent the canvas size.
- */
  function doResize() {
      canvas.width = window.innerWidth;
      canvas.height = window.innerHeight;
@@ -411,11 +355,6 @@ function frame() {
      }
  }
  
-/**
- * Responds to left mouse click on canvas; points all head toward mouse location
- * when mouse is clicked and as it is dragged.  However if shift key is down,
- * all the data is reinitialized instead.
- */
 function doMouse(evt) {
     function headTowards(x,y) {
         for (var i = 0; i < POINT_COUNT; i++) {
@@ -448,9 +387,6 @@ function doMouse(evt) {
     document.addEventListener("mouseup", up);
 }
  
-/**
- * initialization function that will be called when the page has loaded.
- */
 function init() {
     try {
         canvas = document.createElement("canvas");
